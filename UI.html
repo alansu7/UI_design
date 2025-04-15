@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>教育培训界面</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      display: flex;
+      justify-content: space-between;
+      padding: 40px;
+      background: #f0f2f5;
+    }
+    .panel {
+      width: 45%;
+    }
+    .card {
+      background: #3a66b3;
+      color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .card:hover {
+      background: #2f5294;
+    }
+    .progress-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(#4caf50 var(--percent), #ddd 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+      position: relative;
+    }
+    .progress-circle span {
+      position: absolute;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .training {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel" id="left-panel">
+    <div class="card" onclick="showInfo('项目经理')">项目经理</div>
+    <div class="card" onclick="showInfo('操作员')">施工员<br>技术员<br>安全员</div>
+    <div class="card" onclick="showInfo('班组长')">班组长 * N</div>
+  </div>
+
+  <div class="panel" id="right-panel">
+    <div class="progress-circle" id="progress-circle" style="--percent: 0deg;">
+      <span id="progress-value">0%</span>
+    </div>
+    <div class="training" id="training-content">
+      点击左侧角色查看资格匹配度和培训内容
+    </div>
+  </div>
+
+  <script>
+    const progress = document.getElementById('progress-circle');
+    const valueText = document.getElementById('progress-value');
+    const trainingContent = document.getElementById('training-content');
+
+    const mockData = {
+      "项目经理": { percent: 85, training: "高级项目管理策略、跨部门协调能力提升、风险预控技术" },
+      "操作员": { percent: 60, training: "施工规范强化、安全事故应急响应、工具操作培训" },
+      "班组长": { percent: 40, training: "基础管理能力、沟通技巧、安全意识入门培训" }
+    };
+
+    function showInfo(role) {
+      const { percent, training } = mockData[role];
+      const degrees = percent * 3.6;
+
+      progress.style.setProperty('--percent', `${degrees}deg`);
+      valueText.innerText = `${percent}%`;
+
+      trainingContent.innerHTML = `<h3>${role} 推荐培训内容</h3><p>${training}</p>`;
+    }
+  </script>
+
+</body>
+</html>
