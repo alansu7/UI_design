@@ -136,7 +136,7 @@
 <body>
 
   <h1>培训系统</h1>
-  <div style="text-align: right; padding: 0 40px;">
+  <div id="back-btn" style="text-align: right; padding: 0 40px; display: none;">
     <button onclick="goBack()" style="background-color: #555; color: white; padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer;">
       ⬅ 返回登录
     </button>
@@ -210,6 +210,7 @@
       loggedRole = role;
       document.querySelector('.login-container').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
+      document.getElementById("back-btn").style.display = "block"; // 👈 显示返回按钮
       renderButtons();
     }
 
@@ -322,6 +323,7 @@
     function goBack() {
       document.getElementById("app").style.display = "none";
       document.querySelector(".login-container").style.display = "block";
+      document.getElementById("back-btn").style.display = "none"; // 👈 隐藏按钮
       document.getElementById("username").value = "";
       document.getElementById("role").value = "项目经理";
       document.getElementById("left-panel").innerHTML = "";
