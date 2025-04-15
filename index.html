@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>培训系统</title>
   <style>
     body {
@@ -10,19 +10,16 @@
       background: linear-gradient(135deg, #0a0f24, #1e2b50);
       color: #e0e0e0;
     }
-
     h1 {
       text-align: center;
       font-size: 36px;
       color: #00bfff;
       margin: 24px 0 10px;
     }
-
     .login-container {
       text-align: center;
       margin: 20px 0;
     }
-
     .login-container input,
     .login-container select,
     .login-container button {
@@ -32,26 +29,21 @@
       border: none;
       font-size: 16px;
     }
-
     .login-container button {
       background-color: #3a66b3;
       color: white;
       cursor: pointer;
     }
-
     .app {
-      display: flex;
+      display: none;
       justify-content: space-between;
       padding: 30px 60px;
-      display: none;
     }
-
     .panel {
       width: 45%;
       display: flex;
       flex-direction: column;
     }
-
     .card {
       background: linear-gradient(135deg, #1f3b8d, #3a66b3);
       color: #fff;
@@ -64,33 +56,22 @@
       font-weight: 600;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
     .card:hover {
       transform: scale(1.03);
       box-shadow: 0 0 18px rgba(58,166,255,0.6);
     }
-
-    .dropdown-content .card {
-      background: #5c85d6;
-      font-size: 16px;
-      padding: 12px;
-    }
-
     .right-panel {
       width: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
     .progress-circle {
       width: 140px;
       height: 140px;
@@ -103,14 +84,12 @@
       margin-bottom: 30px;
       transition: background 0.3s ease;
     }
-
     .progress-circle span {
       position: absolute;
       font-size: 22px;
       font-weight: bold;
       color: #000;
     }
-
     .training {
       background: rgba(255, 255, 255, 0.1);
       padding: 24px;
@@ -121,13 +100,11 @@
       line-height: 1.6;
       backdrop-filter: blur(10px);
     }
-
     .training h3 {
       margin-top: 0;
       font-size: 18px;
       color: #fff;
     }
-
     #ai-button {
       padding: 8px 16px;
       background-color: #3a66b3;
@@ -137,20 +114,20 @@
       cursor: pointer;
       margin-top: 16px;
     }
-
     #ai-result {
       margin-top: 12px;
       font-style: italic;
       color: #fff;
     }
-
+    .dropdown {
+      position: relative;
+    }
     .dropdown-content {
       display: none;
       flex-direction: column;
       gap: 10px;
       margin-top: 8px;
     }
-
     .dropdown.open .dropdown-content {
       display: flex;
     }
@@ -160,11 +137,13 @@
 
   <h1>培训系统</h1>
   <div style="text-align: right; padding: 0 40px;">
-    <button onclick="goBack()">⬅ 返回登录</button>
+    <button onclick="goBack()" style="background-color: #555; color: white; padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer;">
+      ⬅ 返回登录
+    </button>
   </div>
 
   <div class="login-container">
-    <input type="text" id="username" placeholder="请输入用户名">
+    <input type="text" id="username" placeholder="请输入用户名" />
     <select id="role">
       <option value="项目经理">项目经理</option>
       <option value="施工员">施工员</option>
@@ -196,145 +175,164 @@
     </div>
   </div>
 
-<script>
-  const allRoles = [
-    { id: '项目经理', label: '👨‍💼 项目经理' },
-    { id: '施工员', label: '🛠️ 施工员' },
-    { id: '技术员', label: '🧰 技术员' },
-    { id: '安全员', label: '🦺 安全员' },
-    { id: 'A区班组长', label: '🏗️ A区班组长' },
-    { id: 'B区班组长', label: '🏗️ B区班组长' },
-    { id: 'C区班组长', label: '🏗️ C区班组长' },
-    { id: 'D区班组长', label: '🏗️ D区班组长' },
-    { id: 'E区班组长', label: '🏗️ E区班组长' },
-  ];
-
-  const mockData = {
-    "项目经理": { percent: 85, training: "高级项目管理策略、跨部门协调能力提升、风险预控技术" },
-    "施工员": { percent: 40, training: "施工流程优化、操作规范标准、安全作业管理" },
-    "技术员": { percent: 70, training: "设备调试与维护、质量检查流程、图纸识读" },
-    "安全员": { percent: 55, training: "安全检查流程、应急预案编写、现场隐患识别" },
-    "A区班组长": { percent: 50, training: "区域协调能力、人员管理、任务分配" },
-    "B区班组长": { percent: 45, training: "现场沟通技巧、团队协作、安全生产流程" },
-    "C区班组长": { percent: 60, training: "C区任务对接流程、交付标准、质量责任制" },
-    "D区班组长": { percent: 35, training: "D区排产计划协同、物料进度同步" },
-    "E区班组长": { percent: 78, training: "E区安全环境管理、现场应变能力" }
-  };
-
-  let currentRole = null;
-  let loggedRole = null;
-
-  function login() {
-    const role = document.getElementById('role').value;
-    const username = document.getElementById('username').value.trim();
-    if (!username) return alert('请输入用户名');
-
-    loggedRole = role;
-    document.querySelector('.login-container').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    renderButtons();
-  }
-
-  function renderButtons() {
-    const container = document.getElementById('left-panel');
-    container.innerHTML = '';
-
-    let visibleRoles = [];
-
-    if (loggedRole === '项目经理') {
-      visibleRoles = allRoles;
-    } else if (['施工员', '技术员', '安全员'].includes(loggedRole)) {
-      visibleRoles = allRoles.filter(r => [loggedRole, ...班组长()].includes(r.id));
-    } else {
-      visibleRoles = allRoles.filter(r => r.id === loggedRole);
-    }
-
-    visibleRoles.forEach(role => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      div.textContent = role.label;
-      div.onclick = () => showInfo(role.id);
-      container.appendChild(div);
-    });
-  }
-
-  function 班组长() {
-    return ['A区班组长', 'B区班组长', 'C区班组长', 'D区班组长', 'E区班组长'];
-  }
-
-  function showInfo(role) {
-    const { percent, training } = mockData[role] || { percent: 0, training: "暂无数据" };
-    currentRole = role;
-    animateProgress(percent);
-    const trainingEl = document.getElementById("training-content");
-    trainingEl.querySelector("h3")?.remove();
-    trainingEl.querySelector("p")?.remove();
-    trainingEl.querySelector("#ai-result").innerText = "";
-    trainingEl.insertAdjacentHTML("afterbegin", `<h3>${role} 推荐培训内容</h3><p>${training}</p>`);
-  }
-
-  function animateProgress(targetPercent) {
-    let current = 0;
-    const duration = 800;
-    const steps = 30;
-    const increment = targetPercent / steps;
-    const interval = duration / steps;
-
-    const animate = setInterval(() => {
-      current += increment;
-      if (current >= targetPercent) {
-        current = targetPercent;
-        clearInterval(animate);
-      }
-
-      const deg = current * 3.6;
-      const color = getColor(current);
-      document.getElementById("progress-circle").style.background = `conic-gradient(${color} ${deg}deg, #ddd ${deg}deg)`;
-      document.getElementById("progress-value").innerText = `${Math.round(current)}%`;
-    }, interval);
-  }
-
-  function getColor(p) {
-    if (p <= 50) return '#f44336'; // 红
-    if (p <= 75) return '#ffc107'; // 黄
-    return '#4caf50';              // 绿
-  }
-
-  function generateAI() {
-    const aiBox = document.getElementById("ai-result");
-    if (!currentRole) {
-      aiBox.innerText = "请先点击一个角色。";
-      return;
-    }
-
-    const ideas = [
-      "结合现场案例提升实战能力。",
-      "加入线上互动问答，巩固知识。",
-      "推荐你试试AI模拟训练平台，体验式学习更有效。",
-      "针对你当前岗位，建议加强心理安全与领导力课程。",
-      "为你匹配了行业最新标准学习资料包。"
+  <script>
+    const allRoles = [
+      { id: '项目经理', label: '👨‍💼 项目经理' },
+      { id: '施工员', label: '🛠️ 施工员' },
+      { id: '技术员', label: '🧰 技术员' },
+      { id: '安全员', label: '🦺 安全员' },
+      { id: 'A区班组长', label: '🏗️ A区班组长' },
+      { id: 'B区班组长', label: '🏗️ B区班组长' },
+      { id: 'C区班组长', label: '🏗️ C区班组长' },
+      { id: 'D区班组长', label: '🏗️ D区班组长' },
+      { id: 'E区班组长', label: '🏗️ E区班组长' }
     ];
 
-    const randomIndex = Math.floor(Math.random() * ideas.length);
-    aiBox.innerText = `📌 AI推荐：${ideas[randomIndex]}`;
-  }
+    const mockData = {
+      "项目经理": { percent: 85, training: "高级项目管理策略、跨部门协调能力提升、风险预控技术" },
+      "施工员": { percent: 40, training: "施工流程优化、操作规范标准、安全作业管理" },
+      "技术员": { percent: 70, training: "设备调试与维护、质量检查流程、图纸识读" },
+      "安全员": { percent: 55, training: "安全检查流程、应急预案编写、现场隐患识别" },
+      "A区班组长": { percent: 50, training: "区域协调能力、人员管理、任务分配" },
+      "B区班组长": { percent: 45, training: "现场沟通技巧、团队协作、安全生产流程" },
+      "C区班组长": { percent: 60, training: "C区任务对接流程、交付标准、质量责任制" },
+      "D区班组长": { percent: 35, training: "D区排产计划协同、物料进度同步" },
+      "E区班组长": { percent: 78, training: "E区安全环境管理、现场应变能力" }
+    };
 
-  function goBack() {
-    document.getElementById("app").style.display = "none";
-    document.querySelector(".login-container").style.display = "block";
-    document.getElementById("username").value = "";
-    document.getElementById("role").value = "项目经理";
-    document.getElementById("left-panel").innerHTML = "";
-    document.getElementById("training-content").innerHTML = `
-      点击左侧角色查看资格匹配度和培训内容。
-      <div>
-        <button id="ai-button" onclick="generateAI()">🧠 获取 AI 个性化推荐</button>
-      </div>
-      <div id="ai-result"></div>
-    `;
-    document.getElementById("progress-circle").style.background = "conic-gradient(#ddd 0deg, #ddd 0deg)";
-    document.getElementById("progress-value").innerText = "0%";
-  }
-</script>
+    let currentRole = null;
+    let loggedRole = null;
+
+    function login() {
+      const role = document.getElementById('role').value;
+      const username = document.getElementById('username').value.trim();
+      if (!username) return alert('请输入用户名');
+      loggedRole = role;
+      document.querySelector('.login-container').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      renderButtons();
+    }
+
+    function renderButtons() {
+      const container = document.getElementById('left-panel');
+      container.innerHTML = '';
+
+      let visibleRoles = [];
+      if (loggedRole === '项目经理') {
+        visibleRoles = allRoles;
+      } else if (['施工员', '技术员', '安全员'].includes(loggedRole)) {
+        visibleRoles = allRoles.filter(r => [loggedRole, ...班组长()].includes(r.id));
+      } else {
+        visibleRoles = allRoles.filter(r => r.id === loggedRole);
+      }
+
+      const upper = visibleRoles.filter(r => !r.id.includes('班组长') || r.id === loggedRole);
+      const foremen = visibleRoles.filter(r => 班组长().includes(r.id));
+
+      upper.forEach(role => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.textContent = role.label;
+        div.onclick = () => showInfo(role.id);
+        container.appendChild(div);
+      });
+
+      if (foremen.length && !loggedRole.includes('班组长')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'dropdown';
+        wrap.id = 'foreman-dropdown';
+
+        const trigger = document.createElement('div');
+        trigger.className = 'card';
+        trigger.textContent = '📋 班组长 ⬇';
+        trigger.onclick = () => wrap.classList.toggle('open');
+
+        const content = document.createElement('div');
+        content.className = 'dropdown-content';
+
+        foremen.forEach(r => {
+          const item = document.createElement('div');
+          item.className = 'card';
+          item.textContent = r.label;
+          item.onclick = () => showInfo(r.id);
+          content.appendChild(item);
+        });
+
+        wrap.appendChild(trigger);
+        wrap.appendChild(content);
+        container.appendChild(wrap);
+      }
+    }
+
+    function 班组长() {
+      return ['A区班组长', 'B区班组长', 'C区班组长', 'D区班组长', 'E区班组长'];
+    }
+
+    function showInfo(role) {
+      const { percent, training } = mockData[role] || { percent: 0, training: "暂无数据" };
+      currentRole = role;
+      animateProgress(percent);
+      const trainingEl = document.getElementById("training-content");
+      trainingEl.querySelector("h3")?.remove();
+      trainingEl.querySelector("p")?.remove();
+      trainingEl.querySelector("#ai-result").innerText = "";
+      trainingEl.insertAdjacentHTML("afterbegin", `<h3>${role} 推荐培训内容</h3><p>${training}</p>`);
+    }
+
+    function animateProgress(targetPercent) {
+      let current = 0;
+      const steps = 30, duration = 800, increment = targetPercent / steps;
+      const interval = duration / steps;
+
+      const animate = setInterval(() => {
+        current += increment;
+        if (current >= targetPercent) {
+          current = targetPercent;
+          clearInterval(animate);
+        }
+        const deg = current * 3.6;
+        const color = getColor(current);
+        document.getElementById("progress-circle").style.background = `conic-gradient(${color} ${deg}deg, #ddd ${deg}deg)`;
+        document.getElementById("progress-value").innerText = `${Math.round(current)}%`;
+      }, interval);
+    }
+
+    function getColor(p) {
+      if (p <= 50) return '#f44336';
+      if (p <= 75) return '#ffc107';
+      return '#4caf50';
+    }
+
+    function generateAI() {
+      const aiBox = document.getElementById("ai-result");
+      if (!currentRole) {
+        aiBox.innerText = "请先点击一个角色。";
+        return;
+      }
+      const ideas = [
+        "结合现场案例提升实战能力。",
+        "加入线上互动问答，巩固知识。",
+        "推荐你试试AI模拟训练平台，体验式学习更有效。",
+        "建议加强心理安全与领导力课程。",
+        "为你匹配了行业最新标准学习资料包。"
+      ];
+      aiBox.innerText = `📌 AI推荐：${ideas[Math.floor(Math.random() * ideas.length)]}`;
+    }
+
+    function goBack() {
+      document.getElementById("app").style.display = "none";
+      document.querySelector(".login-container").style.display = "block";
+      document.getElementById("username").value = "";
+      document.getElementById("role").value = "项目经理";
+      document.getElementById("left-panel").innerHTML = "";
+      document.getElementById("training-content").innerHTML = `
+        点击左侧角色查看资格匹配度和培训内容。
+        <div><button id="ai-button" onclick="generateAI()">🧠 获取 AI 个性化推荐</button></div>
+        <div id="ai-result"></div>
+      `;
+      document.getElementById("progress-circle").style.background = "conic-gradient(#ddd 0deg, #ddd 0deg)";
+      document.getElementById("progress-value").innerText = "0%";
+    }
+  </script>
 </body>
 </html>
